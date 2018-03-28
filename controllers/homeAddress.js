@@ -3,21 +3,34 @@ exports.install = function () {
 };
 
 function get_address_data() {
-    var hbase = require('hbase');
-    var client = hbase({
-        host: 'hadoop2',
-        port: 2181
+    var result = [];
+
+    var hbase1 = require('hbase');
+    var client1 = hbase1({
+        host: '10.217.2.231',
+        port: 8081
     });
-    client.getRow('test_spark:home_addr_result', 'Anna Ben', ['point:point'], function (err, row) {
-        console.log(row);
-    });
-    var result = [
-        {name: 'aa bb', value: [90, 31.89, 0]},
-        {name: 'cc dd', value: [80, 39.608266, 0]},
-        {name: 'ee ff', value: [70, 37.35, 0]},
-        {name: 'dd ff', value: [60, 29.985295, 0]},
-    ];
-    console.log("Receive get address data request");
     self = this;
-    self.res.send(result);
+    var t = client1.table("test_spark:home_addr_result");
+    t.scan(function (err, datas) {
+        for (j = 0, len = datas.length; j < len; j++) {
+            data = datas[j];
+            var k = data.key;
+            var v = data.$;
+            v = v.slice(1, v.length - 1);
+            var varr = v.split(',');
+            varr.forEach(function (v,i,arr) {
+                arr[i] = parseFloat(v);
+            })
+            var arr = [];
+            arr = arr.concat(varr);
+            arr.push(9);
+            result.push({name: k, value: arr});
+        }
+        console.log("length:", result.length);
+        self.res.send(result);
+    });
+
+    console.log("Receive get address data request");
+
 }
