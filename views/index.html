@@ -1,4 +1,4 @@
-@{title('Something awesome')}
+@{title('Iov data display platform')}
 
 <hr/>
 <br/>
@@ -6,5 +6,40 @@
     Yves platform shows graphs of statistic and machine learning.<br/>
     <b>Put your awesome model here.</b>
 </p>
+<div class="menu">
+    <ul>
+        <li><a class="yeva" href="#" onclick="appUseCountDisplay();return false;">App use count</a></li>
+        <li><a class="yeva" href="/map/world">World map</a></li>
+        <li><a class="yeva" href="#">some</a></li>
+    </ul>
+</div>
+<div id="chart" style="width:1000px; height:1000px; margin:0 auto;"></div>
 <br/>
 <br/>
+
+<script type="text/javascript">
+    function appUseCountDisplay() {
+        var node = document.getElementById('chart');
+        var myChart = echarts.init(node);
+        var option = {
+            title: {
+                text: 'APP use count statistic display'
+            },
+            tooltip: {},
+            legend: {
+                data: ['APP use count']
+            },
+            xAxis: {
+                data: ["music", "video", "social", "game", "office", "radio"]
+            },
+            yAxis: {},
+            series: [{
+                name: 'Use count',
+                type: 'bar',
+                data: [5, 20, 36, 10, 10, 20]
+            }]
+        };
+        myChart.setOption(option);
+    }
+
+</script>
