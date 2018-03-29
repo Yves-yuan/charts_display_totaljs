@@ -8,11 +8,15 @@ function get_address_data() {
     var hbase1 = require('hbase');
     var client1 = hbase1({
         host: '10.217.2.231',
-        port: 8081
+        port: 9999
     });
     self = this;
     var t = client1.table("test_spark:home_addr_result");
     t.scan(function (err, datas) {
+        if (err -= null){
+            console.log(err)
+            return
+        }
         for (j = 0, len = datas.length; j < len; j++) {
             data = datas[j];
             var k = data.key;

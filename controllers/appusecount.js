@@ -8,7 +8,7 @@ function getAppUseCountData() {
     var result = [];
     var client1 = hbase({
         host: '10.217.2.231',
-        port: 8081
+        port: 9999
     });
     var t = client1.table("test_spark:app_count");
 

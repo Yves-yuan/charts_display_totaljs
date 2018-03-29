@@ -12,5 +12,5 @@ function view_index() {
 
 function view_world_map() {
 	var self = this;
-	self.view('map/world/scatterGL-gps')
+	self.view('map/world/world_map')
 }

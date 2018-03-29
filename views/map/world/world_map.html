@@ -2,21 +2,12 @@
 <br/>
 
 <div id="worldMap" style="height: 800px; width:1000px "></div>
-<!--<div id="test1" style="height: 800px; width:1000px ">-->
-    <!--<li>-->
-        <!--<a id="a1" class="yeva" href="#">111111</a>-->
-    <!--</li>-->
-<!--</div>-->
 <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
 <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
 <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
 <script type="text/javascript"
         src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
-<!--<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>-->
 <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
-<!--&lt;!&ndash;<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>&ndash;&gt;-->
-<!--<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>-->
-<!--<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>-->
 <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
 
 <script type="text/javascript">
@@ -29,10 +20,6 @@
         {name: 'Michael Bertie', value: [120.38, 37.35, 0]},
         {name: 'Michael Carter', value: [122.207216, 29.985295, 0]},
     ];
-    // $.get("/map/world/data", function (data) {
-    //     alert(1);
-    //     alert(data);
-    // }, "json");
     option = {
         backgroundColor: '#227a66',
         title: {
@@ -93,22 +80,25 @@
     };
     myChart.setOption(option);
 
-    $.get("http://10.217.6.32:8000/map/world/data", function (result) {
-        for (var i = 0; i < result.length; i++) {
-            myData.push(result[i]);
+    $.ajax({
+        url: 'http://10.217.6.32:8000/map/world/data',
+        timeout: 1000, //超时时间设置，单位毫秒
+        type: 'get',  //请求方式，get或post
+        data: {},  //请求所传参数，json格式
+        dataType: 'json',//返回的数据格式
+        success: function (data) { //请求成功的回调函数
+            for (var i = 0; i < data.length; i++) {
+                myData.push(data[i]);
+            }
+            option.series[0].data = myData;
+            myChart.setOption(option);
+        },
+        complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+            if (status == 'timeout') {//超时,status还有success,error等值的情况
+                ajaxTimeoutTest.abort();
+                alert("超时");
+            }
         }
-        option.series[0].data = myData;
-        myChart.setOption(option);
     });
-
-    // $("#test1").click(function (event) {
-    //     $.get("http://10.217.6.32:8000/map/world/data", function (result) {
-    //         for (var i = 0; i < result.length; i++) {
-    //             myData.push(result[i]);
-    //         }
-    //         option.series[0].data = myData;
-    //         myChart.setOption(option);
-    //     })
-    // });
 
 </script>
