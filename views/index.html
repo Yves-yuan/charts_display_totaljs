@@ -30,16 +30,23 @@
                 data: ['APP use count']
             },
             xAxis: {
-                data: ["music", "video", "social", "game", "office", "radio"]
+                data: []
             },
             yAxis: {},
             series: [{
                 name: 'Use count',
                 type: 'bar',
-                data: [5, 20, 36, 10, 10, 20]
+                data: []
             }]
         };
         myChart.setOption(option);
+        $.get("http://10.217.6.32:8000/diag/app/useCount",function (result) {
+            for (var i = 0; i < result.length; i++) {
+                option.xAxis.data.push(result[i].name);
+                option.series[0].data.push(result[i].value);
+            }
+            myChart.setOption(option);
+        });
     }
 
 </script>
