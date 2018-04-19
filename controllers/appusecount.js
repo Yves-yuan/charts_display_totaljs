@@ -13,6 +13,9 @@ function getAppUseCountData() {
     var t = client1.table("test_spark:app_count");
 
     t.scan(function (err, datas) {
+        if (err!=null){
+            console.log(err)
+        }
         for (j = 0, len = datas.length; j < len; j++) {
             data = datas[j];
             var k = data.key;
